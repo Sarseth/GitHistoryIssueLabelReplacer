@@ -1,0 +1,12 @@
+#!/bin/bash
+input="$1"
+while IFS= read -r line
+do
+stringarray=($line)
+sed -i "/^${stringarray[0]}[ :]/!{q100}; {1 s/^${stringarray[0]}[ :]/${stringarray[1]::-1}: /}" .git/COMMIT_EDITMSG
+status=$?
+#After first result was found, break loop
+if [ $status -eq 0 ]; then
+	break
+fi
+done < "$input"

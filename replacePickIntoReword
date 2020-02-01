@@ -1,0 +1,11 @@
+#!/bin/bash
+sed -i 's/^pick/r/g' .git/rebase-merge/git-rebase-todo 
+count=$(grep -c ^r .git/rebase-merge/git-rebase-todo)
+
+read -p "$count commits marked as reword. If you want to abort click [n] or anything else to continue." -n 1 -r
+echo    # move to a new line
+if [[ $REPLY =~ ^[Nn]$ ]]
+then
+	echo "Aborting rebase!"
+	git rebase --abort
+fi
